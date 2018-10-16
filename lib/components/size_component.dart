@@ -6,5 +6,8 @@ class SizeComponent extends Component {
   set width(double width) => _width = width;
   double get height => _height;
   set height(double height) => _height = height;
-  SizeComponent(this._width, this._height);
+  void setSize(double width, double height) {
+    _width = width;
+    _height = height;
+  }
 }

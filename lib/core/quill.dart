@@ -5,64 +5,63 @@ class Quill extends Feather {
 
   @override
   void init() {
-    super.init();
     for (final component in _components) {
       component.init();
     }
+    super.init();
   }
 
   @override
   void dispose() {
-    super.dispose();
     for (final component in _components) {
       component.dispose(); 
     }
+    super.dispose();
   }
   
   @override
   void load() {
-    super.load();
     for (final component in _components) {
       component.load(); 
     }
+    super.load();
   }
 
   @override
   void unload() {
-    super.unload();
     for (final component in _components) {
       component.unload();
     }
+    super.unload();
   }
 
   @override
   void input(Event event) {
-    super.input(event);
     for (final component in _components) {
       component.input(event); 
     }
+    super.input(event);
   }
 
   @override
   void update(Time time) {
-    super.update(time);
     for (final component in _components) {
       component.update(time);  
     }
+    super.update(time);
   }
 
   @override
   void render(Context context) {
-    super.render(context);
     for (final component in _components) {
       component.render(context);  
     }
+    super.render(context);
   }
 
   T addComponent<T extends Component>(T component) {
     if (!hasComponent<T>()) {
       component.quill = this;
-      component.init();
       _components.add(component);
       return component; 
     }

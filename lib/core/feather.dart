@@ -1,7 +1,9 @@
 part of quill;
 
 class Feather {
+  bool active = true;
   final Map<String, Feather> _feathers = new Map<String, Feather>();
+  Map<String, Feather> get feathers => _feathers;
   Feather parent;
 
   void init() {
@@ -30,19 +32,25 @@ class Feather {
 
   void input(Event event) {
     for (final feather in _feathers.values) {
-      feather.input(event);
+      if (feather.active) {
+        feather.input(event);
+      }
     }
   }
 
   void update(Time time) {
     for (final feather in _feathers.values) {
-      feather.update(time);
+      if (feather.active) {
+        feather.update(time);
+      }
     }
   }
 
   void render(Context context) {
     for (final feather in _feathers.values) {
-      feather.render(context);
+      if (feather.active) {
+        feather.render(context);
+      }
     }
   }
 
@@ -58,8 +66,10 @@ class Feather {
 
   void removeFeather(String name) {
     if (_feathers[name] != null) {
+      _feathers[name].unload();
       _feathers[name].dispose();
       _feathers[name] = null;
+      _feathers.remove(name);
     }
   }
 
