@@ -82,6 +82,7 @@ these features.  Here is a list of upcoming features:
 
 * Audio
 * Image Caching
+* LifeCycle Management
 
 
 ## Suggestions & Feedback
