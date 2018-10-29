@@ -34,7 +34,7 @@ class Animation {
     await texture.load();
     if (presets != null) {
       int horizontalFrames = (texture.image.width / presets['width']).floor();
-      int verticalFrames = (texture.image.height / presets['height']).floor();
+      //int verticalFrames = (texture.image.height / presets['height']).floor();
       for (int i = presets['start']; i < presets['end']; i++) {
         double x = (i % horizontalFrames).toDouble();
         double y = (i / horizontalFrames).floor().toDouble();

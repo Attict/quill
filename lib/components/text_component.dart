@@ -15,6 +15,7 @@ enum TextOptions {
 class TextComponent extends Component {
   Paragraph paragraph;
   String _text;
+  String get text => _text;
   set text(String text) {
     _text = text;
     format();
@@ -75,7 +76,8 @@ class TextComponent extends Component {
     //    ..layout(new ParagraphConstraints(width: 200.0));
 
     if (textStyle == null) {
-      _textStyle = new TextStyle(color: const Color(0xFFF00000), fontSize: 16.0);
+      _textStyle =
+          new TextStyle(color: const Color(0xFFF00000), fontSize: 16.0);
     }
     if (paragraphConstraints == null) {
       _paragraphConstraints = new ParagraphConstraints(width: 250.0);
@@ -83,10 +85,9 @@ class TextComponent extends Component {
     if (paragraphStyle == null) {
       _paragraphStyle = new ParagraphStyle(textDirection: TextDirection.ltr);
     }
-    final ParagraphBuilder builder =
-        new ParagraphBuilder(paragraphStyle)
-          ..pushStyle(textStyle)
-          ..addText(_text);
+    final ParagraphBuilder builder = new ParagraphBuilder(paragraphStyle)
+      ..pushStyle(textStyle)
+      ..addText(_text);
 
     paragraph = builder.build()..layout(paragraphConstraints);
   }

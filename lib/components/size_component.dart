@@ -9,5 +9,9 @@ class SizeComponent extends Component {
   void setSize(double width, double height) {
     _width = width;
     _height = height;
+    PositionComponent position = quill.getComponent<PositionComponent>();
+    if (position != null) {
+      position.updateOffset(width, height);
+    }
   }
 }

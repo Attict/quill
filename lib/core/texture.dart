@@ -7,7 +7,7 @@ class Texture {
 
   /// The Image itself
   Image image;
-  
+
   /// Used to make sure the image is only loaded once,
   /// and that a single texture's load is only called once,
   /// but completed at the same time.
@@ -15,7 +15,6 @@ class Texture {
 
   /// Create the texture by filename
   Texture(this.filename);
-
 
   /// Load the texture during [load]
   Future<Null> load() async {

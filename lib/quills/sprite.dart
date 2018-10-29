@@ -16,55 +16,59 @@ class Sprite extends Quill {
   Point get topRight => new Point(0.0, 0.0);
 
   set color(Color color) => getComponent<ColorComponent>().color = color;
+  set origin(Origin origin) {
+    if (!hasComponent<PositionComponent>()) {
+      addComponent<PositionComponent>(new PositionComponent());
+    }
+    getComponent<PositionComponent>().origin = origin;
+  }
 
-  void initWithColor(Color color, Point position, Size size, {Origin origin}) {
+  void setPosition(double x, double y) {
+    if (!hasComponent<PositionComponent>()) {
+      addComponent<PositionComponent>(new PositionComponent());
+    }
+    position.setPosition(x, y);
+  }
+
+  void setSize(double width, double height) {
+    if (!hasComponent<SizeComponent>()) {
+      addComponent<SizeComponent>(new SizeComponent());
+    }
+    size.setSize(width, height);
+  }
+
+  void setSource(double x, double y, double width, double height) {
+    getComponent<TextureComponent>().setSource(x, y, width, height);
+  }
+
+  void initWithColor(Color color) {
     if (!initialized) {
-      addComponent<ColorComponent>(new ColorComponent())
-        ..setColor(color);
-      addComponent<PositionComponent>(new PositionComponent())
-        ..setPosition(position.x, position.y);
-      addComponent<SizeComponent>(new SizeComponent())
-        ..setSize(size.width, size.height);
+      addComponent<ColorComponent>(new ColorComponent())..setColor(color);
       initialized = true;
     }
     // TODO: else throw new exception
   }
 
-  void initWithTexture(Texture texture, Rect source, Point position, Size size, 
-      {Origin origin}) {
+  void initWithTexture(Texture texture, {Rect source}) {
     if (!initialized) {
       addComponent<TextureComponent>(new TextureComponent())
         ..setTexture(texture, source: source);
-      addComponent<PositionComponent>(new PositionComponent())
-        ..setPosition(position.x, position.y);
-      addComponent<SizeComponent>(new SizeComponent())
-        ..setSize(size.width, size.height);
       initialized = true;
     }
   }
 
-  void initWithAnimation(Animation animation, Point position, Size size, 
-      {Origin origin}) {
+  void initWithAnimation(Animation animation) {
     if (!initialized) {
       addComponent<AnimationComponent>(new AnimationComponent())
         ..addAnimation('default', animation);
-      addComponent<PositionComponent>(new PositionComponent())
-        ..setPosition(position.x, position.y);
-      addComponent<SizeComponent>(new SizeComponent())
-        ..setSize(size.width, size.height);
       initialized = true;
     }
   }
 
-  void initWithAnimations(Map<String, Animation> animations, Point position, 
-      Size size, {Origin origin}) {
+  void initWithAnimations(Map<String, Animation> animations) {
     if (!initialized) {
       addComponent<AnimationComponent>(new AnimationComponent())
         ..setAnimations(animations);
-      addComponent<PositionComponent>(new PositionComponent())
-        ..setPosition(position.x, position.y);
-      addComponent<SizeComponent>(new SizeComponent())
-        ..setSize(size.width, size.height);
       initialized = true;
     }
   }

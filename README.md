@@ -1,6 +1,6 @@
 # Quill
 
-A lightweight game engine, that only uses feathers.
+A lightweight game engine, that keeps your game simple by only using feathers and quills!
 
 ## Why Quill?
 
@@ -28,11 +28,19 @@ class Application extends Feather {
   Sprite user;
   @override
   void init() {
-    /// Create a 
-    user = new Sprite()..initWithColor(const Color(0xFFFF0000), 
-        const Point(0.0, 0.0), const Size(100.0, 100.0));
-    this.addFeather('user', user);
     super.init();
+    /// Create a Sprite
+    user = new Sprite()
+      ..initWithColor(const Color(0xFFFF0000)
+      ..setPosition(0.0, 0.0)
+      ..setSize(100.0, 100.0);
+    addFeather('user', user);
+
+    addFeather<Sprite>('block', new Sprite())
+      ..initWithColor(const Color(0xFF0000FF))
+      ..setPosition(200.0, 200.0
+      ..setSize(50.0, 50.0)
+      ..origin = Origin.top_left;
   }
 
   @override
@@ -80,9 +88,15 @@ Please note that Quill is still in it's early stages, so there are a lot of miss
 I have finally gotten the foundation finalized, so now it's just a matter of adding each of
 these features.  Here is a list of upcoming features:
 
+*Version 0.2.0*
 * Audio
 * Image Caching
 * LifeCycle Management
+
+*Version 0.x.0*
+* Local/Push Notifications
+* Admob support (?) - May be in a separate package such as quill-admob
+* Native Game Center support
 
 
 ## Suggestions & Feedback

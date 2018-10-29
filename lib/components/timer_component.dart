@@ -3,7 +3,7 @@ part of quill;
 class TimerComponent extends Component {
   final Map<String, Timer> timers = new Map<String, Timer>();
   final Map<String, VoidCallback> callbacks = new Map<String, VoidCallback>();
-  
+
   @override
   void update(Time time) {
     super.update(time);

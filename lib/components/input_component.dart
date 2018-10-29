@@ -7,6 +7,7 @@ class InputComponent extends Component {
   @override
   void input(Event event) {
     super.input(event);
+
     /// If event.type matches any of the events.type
     /// and the event is within the bounds of position & size
     /// trigger callback
@@ -23,7 +24,7 @@ class InputComponent extends Component {
           double right = position.x + size.width / 2;
           double bottom = position.y + size.width / 2;
 
-          /// This should be using the baseX and baseY, but for some reason, 
+          /// This should be using the baseX and baseY, but for some reason,
           /// it only works with this setup.  For now skipping.
           if (left <= event.position.x &&
               event.position.x <= right &&

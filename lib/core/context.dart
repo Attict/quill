@@ -18,14 +18,11 @@ class Context {
 
   /// Draw a rectangle that displays:
   ///   a color, a texture or a custom paint object.
-  void drawRect(double x, double y, double w, double h, {
-    Color color, Texture texture, Paint paint
-  }) {
+  void drawRect(double x, double y, double w, double h,
+      {Color color, Texture texture, Paint paint}) {
     if (color != null) {
-      canvas.drawRect(new Rect.fromLTWH(x, y, w, h),
-          new Paint()..color = color);
-    } else if (texture != null) {
-
-    }
+      canvas.drawRect(
+          new Rect.fromLTWH(x, y, w, h), new Paint()..color = color);
+    } else if (texture != null) {}
   }
 }

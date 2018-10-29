@@ -54,10 +54,9 @@ class Feather {
     }
   }
 
-  Feather addFeather(String name, [Feather feather]) {
+  T addFeather<T extends Feather>(String name, [Feather feather]) {
     if (_feathers[name] == null) {
-      _feathers[name] = (feather != null) ?
-          feather : new Feather();
+      _feathers[name] = (feather != null) ? feather : new Feather();
       _feathers[name].parent = this;
       _feathers[name].init();
     }
@@ -73,7 +72,7 @@ class Feather {
     }
   }
 
-  Feather getFeather(String name) {
+  T getFeather<T extends Feather>(String name) {
     if (_feathers[name] != null) {
       return _feathers[name];
     }

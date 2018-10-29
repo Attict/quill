@@ -14,15 +14,15 @@ class Quill extends Feather {
   @override
   void dispose() {
     for (final component in _components) {
-      component.dispose(); 
+      component.dispose();
     }
     super.dispose();
   }
-  
+
   @override
   void load() {
     for (final component in _components) {
-      component.load(); 
+      component.load();
     }
     super.load();
   }
@@ -38,7 +38,7 @@ class Quill extends Feather {
   @override
   void input(Event event) {
     for (final component in _components) {
-      component.input(event); 
+      component.input(event);
     }
     super.input(event);
   }
@@ -46,7 +46,7 @@ class Quill extends Feather {
   @override
   void update(Time time) {
     for (final component in _components) {
-      component.update(time);  
+      component.update(time);
     }
     super.update(time);
   }
@@ -54,7 +54,7 @@ class Quill extends Feather {
   @override
   void render(Context context) {
     for (final component in _components) {
-      component.render(context);  
+      component.render(context);
     }
     super.render(context);
   }
@@ -63,7 +63,7 @@ class Quill extends Feather {
     if (!hasComponent<T>()) {
       component.quill = this;
       _components.add(component);
-      return component; 
+      return component;
     }
     return getComponent<T>();
   }

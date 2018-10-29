@@ -32,8 +32,8 @@ class AnimationComponent extends Component {
         animations[current].texture.image != null) {
       PositionComponent position = quill.getComponent<PositionComponent>();
       SizeComponent size = quill.getComponent<SizeComponent>();
-      Rect destination =
-          new Rect.fromLTWH(position.drawAt.x, position.drawAt.y, size.width, size.height);
+      Rect destination = new Rect.fromLTWH(
+          position.drawAt.x, position.drawAt.y, size.width, size.height);
       Paint paint = new Paint()..color = const Color(0xFFFFFFFF);
       context.canvas.drawImageRect(animations[current].texture.image,
           animations[current].currentFrame(), destination, paint);

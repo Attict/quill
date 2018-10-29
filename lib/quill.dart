@@ -32,20 +32,18 @@ part './quills/scene.dart';
 part './quills/sprite.dart';
 
 class QuillEngine {
-  static const MethodChannel _channel =
-      const MethodChannel('quill');
+  static const MethodChannel _channel = const MethodChannel('quill');
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
 
-  /// The 
+  /// The
   final Feather _application;
   Duration _lastUpdate;
   double fps;
   QuillEngine(this._application, {this.fps});
-
 
   /// This is where the user will start their application.
   Future<Null> start() async {
@@ -55,7 +53,7 @@ class QuillEngine {
     _application.load();
 
     /// Begin handling input, and running
-    window.onPointerDataPacket = this.handleInput; 
+    window.onPointerDataPacket = this.handleInput;
     window.onBeginFrame = this.run;
     window.scheduleFrame();
   }
@@ -106,12 +104,12 @@ class QuillEngine {
     /// RENDER:
     /// This is where our [render] loop happens, by building
     /// the canvas, and context.  By efault, we center the canvas
-    /// and all objects to the center.  
+    /// and all objects to the center.
     ///
     /// Optionally the user can replace change the canvas translation
     /// by calling [context.translate(x, y)].
-    final Rect paintBounds = Offset.zero & 
-        (window.physicalSize / window.devicePixelRatio);
+    final Rect paintBounds =
+        Offset.zero & (window.physicalSize / window.devicePixelRatio);
     final PictureRecorder recorder = new PictureRecorder();
     final Canvas canvas = new Canvas(recorder, paintBounds);
     final Context context = new Context(canvas)
@@ -155,7 +153,13 @@ class QuillEngine {
 }
 
 enum Origin {
-  top_left, top_center, top_right,
-  center_left, center, center_right,
-  bottom_left, bottom_center, bottom_right,
+  top_left,
+  top_center,
+  top_right,
+  center_left,
+  center,
+  center_right,
+  bottom_left,
+  bottom_center,
+  bottom_right,
 }

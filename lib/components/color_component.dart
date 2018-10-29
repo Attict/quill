@@ -7,6 +7,7 @@ class ColorComponent extends Component {
   void setColor(Color color) {
     _color = color;
   }
+
   @override
   void render(Context context) {
     super.render(context);
@@ -16,6 +17,6 @@ class ColorComponent extends Component {
     double y = (position == null) ? 0.0 : position.drawAt.y;
     double w = (size == null) ? 0.0 : size.width;
     double h = (size == null) ? 0.0 : size.height;
-    context.drawRect(x, y, w, h, color: _color); 
+    context.drawRect(x, y, w, h, color: _color);
   }
 }

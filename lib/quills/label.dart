@@ -2,15 +2,22 @@ part of quill;
 
 class Label extends Quill {
   bool initialized = false;
+  String get text => getComponent<TextComponent>().text;
   set text(String text) => getComponent<TextComponent>().text = text;
-  void initWithText(String text, Point position) {
+  Point get position => new Point(getComponent<PositionComponent>().x, 
+      getComponent<PositionComponent>().y);
+  void initWithText(String text) {
     if (!initialized) {
-      addComponent<TextComponent>(new TextComponent())
-        ..setText(text);
-      addComponent<PositionComponent>(new PositionComponent())
-        ..setPosition(position.x, position.y);
+      addComponent<TextComponent>(new TextComponent())..setText(text);
       initialized = true;
     }
+  }
+
+  void setPosition(double x, double y) {
+    if (!hasComponent<PositionComponent>()) {
+      addComponent<PositionComponent>(new PositionComponent());
+    }
+    getComponent<PositionComponent>().setPosition(x, y);
   }
 
   set textStyle(TextStyle textStyle) {
