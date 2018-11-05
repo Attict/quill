@@ -13,7 +13,5 @@ class Scene extends Quill {
     }
   }
 
-  void setSize(double width, double height) {
-
-  }
+  void setSize(double width, double height) {}
 }

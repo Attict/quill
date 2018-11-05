@@ -4,8 +4,8 @@ class Label extends Quill {
   bool initialized = false;
   String get text => getComponent<TextComponent>().text;
   set text(String text) => getComponent<TextComponent>().text = text;
-  Point get position => new Point(getComponent<PositionComponent>().x, 
-      getComponent<PositionComponent>().y);
+  Point get position => new Point(
+      getComponent<PositionComponent>().x, getComponent<PositionComponent>().y);
   void initWithText(String text) {
     if (!initialized) {
       addComponent<TextComponent>(new TextComponent())..setText(text);

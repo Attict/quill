@@ -13,7 +13,7 @@ class PositionComponent extends Component {
   Point get offset => _offset;
   set offset(Point offset) => _offset = offset;
   Origin get origin => _origin;
-  set origin(Origin origin) { 
+  set origin(Origin origin) {
     _origin = origin;
     if (quill.hasComponent<SizeComponent>()) {
       SizeComponent size = quill.getComponent<SizeComponent>();
