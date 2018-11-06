@@ -1,6 +1,6 @@
 name: quill
 description: A lightweight game engine, that keeps your game simple by only using feathers and quills!
-version: 0.1.2+1
+version: 0.2.0
 author: Eric Wagner <eric@attict.net>
 homepage: https://github.com/Attict/Quill
 

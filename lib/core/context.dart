@@ -6,15 +6,11 @@ part of quill;
 class Context {
   static double width;
   static double height;
+  static Point translate;
 
   /// Gives control over the canvas object, to render.
   final Canvas canvas;
   Context(this.canvas);
-
-  /// Translate the canvas
-  void translate(double x, double y) {
-    canvas.translate(x, y);
-  }
 
   /// Draw a rectangle that displays:
   ///   a color, a texture or a custom paint object.

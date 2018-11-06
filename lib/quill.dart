@@ -18,6 +18,8 @@ part './core/timer.dart';
 
 part './components/action_component.dart';
 part './components/animation_component.dart';
+part './components/camera_component.dart';
+part './components/collision_component.dart';
 part './components/color_component.dart';
 part './components/input_component.dart';
 part './components/manager_component.dart';
@@ -77,6 +79,8 @@ class QuillEngine {
     });
     Context.width = screenSize.width;
     Context.height = screenSize.height;
+    Context.translate = new Point(Context.width / 2,
+        Context.height / 2);
     _application.init();
   }
 
@@ -112,8 +116,8 @@ class QuillEngine {
         Offset.zero & (window.physicalSize / window.devicePixelRatio);
     final PictureRecorder recorder = new PictureRecorder();
     final Canvas canvas = new Canvas(recorder, paintBounds);
-    final Context context = new Context(canvas)
-      ..translate(Context.width / 2, Context.height / 2);
+    final Context context = new Context(canvas);
+    context.canvas.translate(Context.translate.x, Context.translate.y);
     _application.render(context);
 
     /// FINALLY:
