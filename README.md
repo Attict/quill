@@ -99,6 +99,8 @@ these features.  Here is a list of upcoming features:
 * Admob support (?) - May be in a separate package such as quill-admob
 * Native Game Center support
 * GravityComponent
+* Add: Rect, Point, Size -to eliminate the need for 'ui/math' libraries and to avoid conflicting.
+* Add other shapes: Poly, Circle, etc.
 
 
 ## Suggestions & Feedback

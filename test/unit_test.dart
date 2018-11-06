@@ -1,12 +1,15 @@
 import 'package:test/test.dart';
 import 'package:quill/quill.dart';
+import 'dart:math';
 
 void main() {
   testSprite();
   testLabel();
   testCollision();
+  testInput();
 }
 
+/// TODO: Test sprite at each origin
 void testSprite() {
   Sprite sprite = new Sprite()
     ..setPosition(10.0, 10.0)
@@ -49,5 +52,24 @@ void testCollision() {
   test('test collision', () {
     expect(collider.isColliding(quillB), true);
   });
-
 }
+
+void testInput() {
+  bool tapped = false;
+  Quill quill = new Quill();
+  quill.addComponent<PositionComponent>(new PositionComponent())
+    ..setPosition(-45.0, -45.0);
+  quill.addComponent<SizeComponent>(new SizeComponent())
+    ..setSize(100.0, 100.0);
+  quill.addComponent<InputComponent>(new InputComponent())
+    ..addEvent(Event.touchdown, () {
+      tapped = true;       
+    });
+
+  quill.input(new Event(Event.touchdown, new Point(0.0, 0.0)));
+
+  test('test input', () {
+    expect(tapped, true);
+  });
+}
+
