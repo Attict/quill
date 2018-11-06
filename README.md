@@ -31,7 +31,7 @@ class Application extends Feather {
     super.init();
     /// Create a Sprite
     user = new Sprite()
-      ..initWithColor(const Color(0xFFFF0000)
+      ..initWithColor(const Color(0xFFFF0000))
       ..setPosition(0.0, 0.0)
       ..setSize(100.0, 100.0);
     addFeather('user', user);
@@ -58,7 +58,7 @@ Primarily through the **input, update, and render** methods.
 
 `init`: Initializes the feather/component.
 
-`destroy`: Disposes of the feather/component, and all internal properties.
+`dispose`: Disposes of the feather/component, and all internal properties.
 
 `load`: Loads any data neccessary for the feather/component.
 
@@ -79,7 +79,7 @@ as there are plans to remove the use of them as soon as possible.  So, rather th
 passing parameters in the constructor, use a custom setter such as 
 `setSize(double width, double height);` like the `SizeComponent`.  For Quills, using 
 custom initializers works great, like the `Sprite` quill:
-`initWithColor(Color color, Point position, Size size)`... then you can initialize 
+`initWithColor(Color color)`... then you can initialize 
 each of these as components!
 
 ## Upcoming
@@ -90,13 +90,15 @@ these features.  Here is a list of upcoming features:
 
 *Version 0.2.0*
 * Audio
+* CollisionComponent
+
+*Version x.x.0*
 * Image Caching
 * LifeCycle Management
-
-*Version 0.x.0*
 * Local/Push Notifications
 * Admob support (?) - May be in a separate package such as quill-admob
 * Native Game Center support
+* GravityComponent
 
 
 ## Suggestions & Feedback
