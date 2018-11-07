@@ -1,12 +1,14 @@
 library quill;
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 
 part './core/animation.dart';
+part './core/audio.dart';
 part './core/component.dart';
 part './core/context.dart';
 part './core/event.dart';
@@ -34,12 +36,7 @@ part './quills/scene.dart';
 part './quills/sprite.dart';
 
 class QuillEngine {
-  static const MethodChannel _channel = const MethodChannel('quill');
-
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
+  static const MethodChannel channel = const MethodChannel('quill');
 
   /// The
   final Feather _application;

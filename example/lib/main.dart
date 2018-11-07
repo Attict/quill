@@ -7,12 +7,24 @@ void main() async {
 }
 
 class Application extends Feather {
+  @override
+  void init() {
+    super.init();
+    addFeather<GameScene>('gameScene', new GameScene())
+      ..initWithBackground(const Color(0xFF333333));
+  }
+}
+
+class GameScene extends Scene {
   Sprite _user;
   Sprite _quill;
   int _userDirection = 0;
   @override
   void init() {
     super.init();
+
+    Audio audio = new Audio('music.aiff')
+      ..load();
 
     _user = new Sprite()
       ..initWithColor(const Color(0xFFFF0000))
