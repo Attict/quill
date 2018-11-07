@@ -26,6 +26,9 @@ class GameScene extends Scene {
     Audio audio = new Audio('music.aiff');
     audio.load().then((_) { audio.play(); });
 
+    Audio audio2 = new Audio('jump.wav', repeat: 5);
+    audio2.load().then((_) { audio2.play(); });
+
     _user = new Sprite()
       ..initWithColor(const Color(0xFFFF0000))
       ..setPosition(0.0, -284.0)

@@ -23,8 +23,8 @@
   NSError *error;
   _player = [[AVAudioPlayer alloc] initWithContentsOfURL:path error:&error];
   [self numberOfLoops:repeat];
-  [self volume:volume];
-  [self rate:rate];
+  //[self volume:volume];
+  //[self rate:rate];
 
   path = nil;
   NSLog(@"Audio %@ initialized successfully", _filename);
@@ -46,6 +46,7 @@
 
 - (void)play {
   [_player play];
+  NSLog(@"Playing successfully");
 }
 
 - (void)pause {
