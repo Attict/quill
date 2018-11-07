@@ -16,10 +16,16 @@ public class QuillPlugin implements MethodCallHandler {
 
   @Override
   public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.equals("getPlatformVersion")) {
+    if (call.method.equals("basePath")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     } else {
       result.notImplemented();
     }
+  }
+
+
+
+  private class QuillAudio implements MethodCallHandler {
+
   }
 }

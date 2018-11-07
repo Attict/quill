@@ -1,23 +1,48 @@
 #import "QuillPlugin.h"
 
-@interface QuillAudio : NSObject
-//@property(readonly, nonatomic) SystemSoundID *soundFile;
-- (instancetype)initWithFile:(NSString *)filePath;
+@interface QuillAudio : NSObject<FlutterPlugin>
+@property(readonly, nonatomic) NSString *filename;
+@property(readonly, nonatomic) NSString *filepath;
+@property(strong, nonatomic) AVAudioPlayer *player;
 @end
 
 @implementation QuillAudio
 
-- (instancetype)initWithFile:(NSString *)filePath {
+- (instancetype)initWithFilename:(NSString *)filename
+                        filepath:(NSString *)filepath{
   self = [super init];
+  _filename = filename;
+  _filepath = filepath;
 
+  NSURL *path = [NSURL fileURLWithPath:filepath];
+  NSError *error;
+  _player = [[AVAudioPlayer alloc] initWithContentsOfURL:path error:&error];
+//  _player.delegate = self;
+  path = nil;
+  NSLog(@"Audio %@ initialized successfully", _filename);
   return self;
 }
 
-- (void)dealloc {
-//  soundFile = nil;
+- (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult) result {
+  if ([@"play" isEqualToString:call.method]) {
+    NSInteger repeat = call.arguments[@"repeat"];
+    [self play:repeat];
+  }
 }
 
-- (void)play:(NSInteger)repeat {}
+- (void)dealloc {
+  _filename = nil;
+  _filepath = nil;
+  // TODO: stop playing
+  _player = nil;
+}
+
+- (void)play:(NSInteger)repeat {
+  NSLog(@"Audio %@ played successfully with repeat %@", _filename, repeat);
+//  _player.numberOfLoops = -1;
+//  [_player play];
+}
+
 - (void)pause {}
 - (void)stop {}
 - (void)setVolume {}
@@ -34,35 +59,43 @@
   FlutterMethodChannel* channel = [FlutterMethodChannel
       methodChannelWithName:@"quill"
             binaryMessenger:[registrar messenger]];
-  QuillPlugin* instance = [[QuillPlugin alloc] init];
+  QuillPlugin* instance = [[QuillPlugin alloc] initWithRegistrar:registrar];
   [registrar addMethodCallDelegate:instance channel:channel];
 }
 
+- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+  self = [super init];
+  _registrar = registrar;
+  return self;
+}
+
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"addAudio" isEqualToString:call.method]) {
-    NSString *filename = call.arguments[@"filename"];
-    [self addAudio:filename];
-    result(nil);
-  } else if ([@"baseAppPath" isEqualToString:call.method]) {
-    NSString *path = [self baseAppPath];
+  if ([@"basePath" isEqualToString:call.method]) {
+    NSString *path = [self basePath];
     result(@{@"path" : path});
+  } else if ([@"addAudio" isEqualToString:call.method]) {
+    NSString *filename = call.arguments[@"filename"];
+    NSString *filepath = call.arguments[@"filepath"];
+    [self addAudio:filename filepath:filepath];
+    result(nil);
   } else {
     result(FlutterMethodNotImplemented);
   }
 }
 
-- (NSString *)baseAppPath {
+- (NSString *)basePath {
   return [[NSBundle mainBundle] resourcePath];
 }
 
-- (void)addAudio:(NSString *)filename {
+- (void)addAudio:(NSString *)filename
+        filepath:(NSString *)filepath {
   NSLog(@"iOS - AddAudio:%@", filename);
-  NSURL *path = [NSURL fileURLWithPath:filename];
-  NSError *error;
-  _player = [[AVAudioPlayer alloc] initWithContentsOfURL:path error:&error];
-  _player.delegate = self;
-  _player.numberOfLoops = -1;
-  [_player play];
+
+  FlutterMethodChannel *audioChannel = [FlutterMethodChannel
+    methodChannelWithName:[NSString stringWithFormat:@"quill/audio/%@", filename]
+          binaryMessenger:[_registrar messenger]];
+  QuillAudio *audio = [[QuillAudio alloc] initWithFilename:filename filepath:filepath];
+  [_registrar addMethodCallDelegate:audio channel:audioChannel];
 }
 
 @end

@@ -23,8 +23,8 @@ class GameScene extends Scene {
   void init() {
     super.init();
 
-    Audio audio = new Audio('music.aiff')
-      ..load();
+    Audio audio = new Audio('music.aiff');
+    audio.load().then((_) { audio.play(); });
 
     _user = new Sprite()
       ..initWithColor(const Color(0xFFFF0000))

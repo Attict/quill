@@ -20,6 +20,7 @@ part './core/timer.dart';
 
 part './components/action_component.dart';
 part './components/animation_component.dart';
+part './components/audio_component.dart';
 part './components/camera_component.dart';
 part './components/collision_component.dart';
 part './components/color_component.dart';
@@ -37,6 +38,15 @@ part './quills/sprite.dart';
 
 class QuillEngine {
   static const MethodChannel channel = const MethodChannel('quill');
+
+  static String _basePath;
+  static Future<String> get basePath async {
+    if (_basePath == null) {
+      final Map<dynamic, dynamic> result = await channel.invokeMethod('basePath');
+      _basePath = result['path'];
+    }
+    return _basePath;
+  }
 
   /// The
   final Feather _application;
