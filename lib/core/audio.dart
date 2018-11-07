@@ -9,7 +9,12 @@ class Audio {
   MethodChannel _channel;
   int state;
 
-  Audio(this.filename);
+  int repeat;
+  double volume;
+  double rate;
+
+  Audio(this.filename, {this.repeat = 0, 
+      this.volume = 0.0, this.rate = 0.0});
 
   Future<Null> dispose() async {}
 
@@ -18,19 +23,18 @@ class Audio {
     basepath = '$basepath/flutter_assets/assets/audio';
     final String filepath = '$basepath/$filename';
     await QuillEngine.channel.invokeMethod('addAudio',
-        <dynamic, dynamic> {'filename': filename, 
-        'filepath': filepath});
+        <dynamic, dynamic> {'filename': filename, 'filepath': filepath,
+        'repeat': repeat, 'volume': volume, 'rate': rate});
     _channel = new MethodChannel('quill/audio/$filename');
     state = loaded;
   }
 
   Future<Null> unload() async {
-     
   }
 
-  Future<Null> play({int repeat = 0}) async {
-    _channel.invokeMethod('play',
-        <dynamic, dynamic> {'repeat': repeat});
+  //
+  Future<Null> play() async {
+    await _channel.invokeMethod('play');
   }
   
   Future<Null> stop() async {}

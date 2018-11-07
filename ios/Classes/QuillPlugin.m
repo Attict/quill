@@ -8,16 +8,24 @@
 
 @implementation QuillAudio
 
-- (instancetype)initWithFilename:(NSString *)filename
-                        filepath:(NSString *)filepath{
+- (instancetype)initWithCall:(FlutterMethodCall *)call {
   self = [super init];
-  _filename = filename;
-  _filepath = filepath;
+  _filename = call.arguments[@"filename"];
+  _filepath = call.arguments[@"filepath"];
+  
+  //NSLog(call.arguments[@"rate"]);
 
-  NSURL *path = [NSURL fileURLWithPath:filepath];
+  NSInteger repeat = [call.arguments[@"repeat"] intValue];
+  float volume = [call.arguments[@"volume"] floatValue];
+  float rate = [call.arguments[@"rate"] floatValue];
+
+  NSURL *path = [NSURL fileURLWithPath:_filepath];
   NSError *error;
   _player = [[AVAudioPlayer alloc] initWithContentsOfURL:path error:&error];
-//  _player.delegate = self;
+  [self numberOfLoops:repeat];
+  [self volume:volume];
+  [self rate:rate];
+
   path = nil;
   NSLog(@"Audio %@ initialized successfully", _filename);
   return self;
@@ -25,8 +33,7 @@
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult) result {
   if ([@"play" isEqualToString:call.method]) {
-    NSInteger repeat = call.arguments[@"repeat"];
-    [self play:repeat];
+    [self play];
   }
 }
 
@@ -37,17 +44,39 @@
   _player = nil;
 }
 
-- (void)play:(NSInteger)repeat {
-  NSLog(@"Audio %@ played successfully with repeat %@", _filename, repeat);
-//  _player.numberOfLoops = -1;
-//  [_player play];
+- (void)play {
+  [_player play];
 }
 
-- (void)pause {}
-- (void)stop {}
-- (void)setVolume {}
+- (void)pause {
+  [_player pause];
+}
+
+- (void)stop {
+  [_player stop];
+}
+
+- (void)numberOfLoops:(NSInteger)numberOfLoops {
+  _player.numberOfLoops = numberOfLoops;
+}
+
+- (void)volume:(float)volume {
+  _player.volume = volume;
+}
+
+- (void)setVolume:(float)volume
+     fadeDuration:(NSTimeInterval)duration {
+  //[_player setVolume:volume fadeDuration:duration];
+}
+
 - (void)mute {}
+- (void)unmute {}
 - (void)seek {}
+
+- (void)rate:(float)rate {
+  /// Range is between 0.5 to 2.0
+  _player.rate = rate;
+}
 
 @end
 
@@ -74,9 +103,7 @@
     NSString *path = [self basePath];
     result(@{@"path" : path});
   } else if ([@"addAudio" isEqualToString:call.method]) {
-    NSString *filename = call.arguments[@"filename"];
-    NSString *filepath = call.arguments[@"filepath"];
-    [self addAudio:filename filepath:filepath];
+    [self addAudio:call];
     result(nil);
   } else {
     result(FlutterMethodNotImplemented);
@@ -87,14 +114,12 @@
   return [[NSBundle mainBundle] resourcePath];
 }
 
-- (void)addAudio:(NSString *)filename
-        filepath:(NSString *)filepath {
-  NSLog(@"iOS - AddAudio:%@", filename);
-
+- (void)addAudio:(FlutterMethodCall *)call {
+  NSString *filename = call.arguments[@"filename"];
   FlutterMethodChannel *audioChannel = [FlutterMethodChannel
     methodChannelWithName:[NSString stringWithFormat:@"quill/audio/%@", filename]
           binaryMessenger:[_registrar messenger]];
-  QuillAudio *audio = [[QuillAudio alloc] initWithFilename:filename filepath:filepath];
+  QuillAudio *audio = [[QuillAudio alloc] initWithCall:call];
   [_registrar addMethodCallDelegate:audio channel:audioChannel];
 }
 
