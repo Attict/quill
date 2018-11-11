@@ -88,6 +88,8 @@ class QuillEngine {
     Context.height = screenSize.height;
     Context.translate = new Point(Context.width / 2,
         Context.height / 2);
+    Context.scale = new Point(1.0, 1.0);
+    Context.rotation = 0.0;
     _application.init();
   }
 
@@ -125,6 +127,8 @@ class QuillEngine {
     final Canvas canvas = new Canvas(recorder, paintBounds);
     final Context context = new Context(canvas);
     context.canvas.translate(Context.translate.x, Context.translate.y);
+    context.canvas.scale(Context.scale.x, Context.scale.y);
+    // TODO: Rotation
     _application.render(context);
 
     /// FINALLY:

@@ -103,6 +103,11 @@ these features.  Here is a list of upcoming features:
 * Add: Rect, Point, Size -to eliminate the need for 'ui/math' libraries and to avoid conflicting.
 * Add other shapes: Poly, Circle, etc.
 
+## Working Branches
+
+* Master - The most stable build.  Generally, you should use this branch.
+* Beta - New changes that are being prepared for the master branch.  This will be more stable than Dev, but less stable than Master.
+* Dev - Actively developed changes.  This branch will have the latest and greatest changes, which you may test out.  However, things could break here.
 
 ## Bugs
 
