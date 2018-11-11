@@ -2,10 +2,25 @@ part of quill;
 
 class Scene extends Quill {
   bool initialized = false;
+  bool fixedPosition = false;
 
-  set origin(Origin origin) => getComponent<PositionComponent>().origin = origin;
+  set origin(Origin origin) { 
+    position.origin = origin;
+  }
   
-  get position => getComponent<PositionComponent>();
+  PositionComponent _position;
+  PositionComponent get position {
+    if (_position == null) {
+      PositionComponent position = getComponent<PositionComponent>();
+      if (position == null) {
+        position = addComponent<PositionComponent>(new PositionComponent());
+      }
+      _position = position;
+    }
+    return _position;
+  }
+
+  get camera => getComponent<CameraComponent>();
 
   void initWithBackground(Color color, {Texture texture}) {
     if (!initialized) {
@@ -29,12 +44,31 @@ class Scene extends Quill {
     position.setPosition(x, y);
   }
 
-  void translate(double x, double y) {
-    CameraComponent camera = getComponent<CameraComponent>();
+  @Deprecated('To be removed in version 0.3')
+  void translate(double x, double y) => translateCamera(x, y);
+
+  void translateCamera(double x, double y) {
     if (camera == null) {
-      camera = addComponent<CameraComponent>(new CameraComponent());
+      addComponent<CameraComponent>(new CameraComponent());
+    }
+    setCameraTranslate(camera.x + x, camera.y + y);
+  }
+
+  void setCameraTranslate(double x, double y) {
+    if (camera == null) {
+      addComponent<CameraComponent>(new CameraComponent());
     }
     camera.translate(x, y);
+    if (fixedPosition) {
+      setPosition(x, y);
+    }
+  }
+
+  void setCameraScale(double x, double y) {
+    if (camera == null) {
+      addComponent<CameraComponent>(new CameraComponent());
+    }
+    camera.scale(x, y);
   }
 
 

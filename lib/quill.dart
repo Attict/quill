@@ -1,12 +1,14 @@
 library quill;
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 
 part './core/animation.dart';
+part './core/audio.dart';
 part './core/component.dart';
 part './core/context.dart';
 part './core/event.dart';
@@ -18,6 +20,7 @@ part './core/timer.dart';
 
 part './components/action_component.dart';
 part './components/animation_component.dart';
+part './components/audio_component.dart';
 part './components/camera_component.dart';
 part './components/collision_component.dart';
 part './components/color_component.dart';
@@ -34,11 +37,15 @@ part './quills/scene.dart';
 part './quills/sprite.dart';
 
 class QuillEngine {
-  static const MethodChannel _channel = const MethodChannel('quill');
+  static const MethodChannel channel = const MethodChannel('quill');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  static String _basePath;
+  static Future<String> get basePath async {
+    if (_basePath == null) {
+      final Map<dynamic, dynamic> result = await channel.invokeMethod('basePath');
+      _basePath = result['path'];
+    }
+    return _basePath;
   }
 
   /// The
@@ -81,6 +88,8 @@ class QuillEngine {
     Context.height = screenSize.height;
     Context.translate = new Point(Context.width / 2,
         Context.height / 2);
+    Context.scale = new Point(1.0, 1.0);
+    Context.rotation = 0.0;
     _application.init();
   }
 
@@ -118,6 +127,8 @@ class QuillEngine {
     final Canvas canvas = new Canvas(recorder, paintBounds);
     final Context context = new Context(canvas);
     context.canvas.translate(Context.translate.x, Context.translate.y);
+    context.canvas.scale(Context.scale.x, Context.scale.y);
+    // TODO: Rotation
     _application.render(context);
 
     /// FINALLY:

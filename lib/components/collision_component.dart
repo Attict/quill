@@ -1,7 +1,22 @@
 part of quill;
 
 class CollisionComponent extends Component {
-  bool isColliding(Quill quill) {
+  double constraintLeft = 0.0;
+  double constraintTop = 0.0;
+  double constraintRight = 1.0; 
+  double constraintBottom = 1.0;
+
+  void setRelativeConstraints({double left = 0.0, double top = 0.0, 
+      double right = 1.0, double bottom = 1.0}) {
+    this.constraintLeft = left;
+    this.constraintTop = top;
+    this.constraintRight = right;
+    this.constraintBottom = bottom;
+  }
+
+  bool isColliding(Quill quill, {double relativeLeft = 0.0, 
+        double relativeTop = 0.0, double relativeRight = 100.0, 
+        double relativeBottom = 100.0}) {
     PositionComponent position = this.quill.getComponent<PositionComponent>();
     SizeComponent size = this.quill.getComponent<SizeComponent>();
     PositionComponent quillPosition = quill.getComponent<PositionComponent>();
@@ -20,19 +35,25 @@ class CollisionComponent extends Component {
     points[3] = new Point(position.drawAt.x + size.width, 
         position.drawAt.y + size.height);
 
-    quillPoints[0] = new Point(quillPosition.drawAt.x, 
-        quillPosition.drawAt.y);
-    quillPoints[1] = new Point(quillPosition.drawAt.x + quillSize.width, 
-        quillPosition.drawAt.y);
-    quillPoints[2] = new Point(quillPosition.drawAt.x, 
-        quillPosition.drawAt.y + quillSize.height);
-    quillPoints[3] = new Point(quillPosition.drawAt.x + quillSize.width, 
-        quillPosition.drawAt.y + quillSize.height);
 
-    double left = position.drawAt.x;
-    double top = position.drawAt.y;
-    double right = position.drawAt.x + size.width;
-    double bottom = position.drawAt.y + size.height;
+
+    quillPoints[0] = new Point(
+        quillPosition.drawAt.x + relativeLeft * quillSize.width, 
+        quillPosition.drawAt.y + relativeTop * quillSize.height);
+    quillPoints[1] = new Point(
+        quillPosition.drawAt.x + relativeRight * quillSize.width, 
+        quillPosition.drawAt.y + relativeTop * quillSize.height);
+    quillPoints[2] = new Point(
+        quillPosition.drawAt.x + relativeLeft * quillSize.width, 
+        quillPosition.drawAt.y + relativeBottom * quillSize.height);
+    quillPoints[3] = new Point(
+        quillPosition.drawAt.x + relativeRight * quillSize.width, 
+        quillPosition.drawAt.y + relativeBottom * quillSize.height);
+
+    double left = position.drawAt.x + size.width * constraintLeft;
+    double top = position.drawAt.y + size.height * constraintTop;
+    double right = position.drawAt.x + size.width * constraintRight;
+    double bottom = position.drawAt.y + size.height * constraintBottom;
 
     for (final point in quillPoints) {
       if (left <= point.x && point.x <= right &&

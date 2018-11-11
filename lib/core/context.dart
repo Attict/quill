@@ -7,6 +7,8 @@ class Context {
   static double width;
   static double height;
   static Point translate;
+  static Point scale;
+  static double rotation;
 
   /// Gives control over the canvas object, to render.
   final Canvas canvas;

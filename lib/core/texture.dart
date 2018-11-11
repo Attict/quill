@@ -3,7 +3,7 @@ part of quill;
 class Texture {
   /// Make sure the file name is also included inside of
   /// the [pubspec.yaml] file.
-  String filename;
+  final String filename;
 
   /// The Image itself
   Image image;

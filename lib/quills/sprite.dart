@@ -6,10 +6,10 @@ class Sprite extends Quill {
   SizeComponent get size => getComponent<SizeComponent>();
   double get halfWidth => size.width / 2;
   double get halfHeight => size.height / 2;
-  double get left => position.x - size.width / 2;
-  double get top => position.y - size.height / 2;
-  double get right => position.x + size.width / 2;
-  double get bottom => position.y + size.height / 2;
+  double get left => position.drawAt.x;
+  double get top => position.drawAt.y;
+  double get right => position.x + size.width;
+  double get bottom => position.y + size.height;
   Point get bottomLeft => new Point(0.0, 0.0);
   Point get bottomRight => new Point(0.0, 0.0);
   Point get topLeft => new Point(0.0, 0.0);
