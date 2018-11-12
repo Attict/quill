@@ -152,8 +152,8 @@ class QuillEngine {
     double scaleX = Context.width / window.physicalSize.width;
     double scaleY = Context.height / window.physicalSize.height;
     for (PointerData datum in packet.data) {
-      double x = scaleX * datum.physicalX - Context.width / 2;
-      double y = scaleY * datum.physicalY - Context.height / 2;
+      double x = (scaleX * datum.physicalX - Context.translate.x) * Context.scale.x;
+      double y = (scaleY * datum.physicalY - Context.translate.y) * Context.scale.y;
       Event event;
       if (datum.change == PointerChange.up) {
         event = new Event(Event.touchup, new Point(x, y));

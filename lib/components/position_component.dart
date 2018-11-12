@@ -51,7 +51,7 @@ class PositionComponent extends Component {
         break;
       case Origin.bottom_left:
         offsetX = 0.0;
-        offsetY = height;
+        offsetY = (Context.scale.y == 1) ? height : 0.0;
         break;
       case Origin.bottom_center:
         offsetX = 0.5 * width;

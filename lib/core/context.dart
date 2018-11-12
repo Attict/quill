@@ -7,8 +7,13 @@ class Context {
   static double width;
   static double height;
   static Point translate;
-  static Point scale;
+  static Point scale = const Point(1.0, 1.0);
   static double rotation;
+  static Origin _origin;
+  static get origin => _origin;
+  static set origin(Origin origin) {
+    _origin = origin;
+  }
 
   /// Gives control over the canvas object, to render.
   final Canvas canvas;

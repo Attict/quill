@@ -19,18 +19,27 @@ class InputComponent extends Component {
         if (position == null || size == null) {
           callbacks[i]();
         } else {
-          double left = position.x - size.width / 2;
-          double top = position.y - size.height / 2;
-          double right = position.x + size.width / 2;
-          double bottom = position.y + size.width / 2;
+          double left = position.drawAt.x * Context.scale.x;
+          double top = position.drawAt.y * Context.scale.y;
+          double right = (position.drawAt.x + size.width) * Context.scale.x;
+          double bottom = (position.drawAt.y + size.height) * Context.scale.y;
 
           /// This should be using the baseX and baseY, but for some reason,
           /// it only works with this setup.  For now skipping.
-          if (left <= event.position.x &&
-              event.position.x <= right &&
-              top <= event.position.y &&
-              event.position.y <= bottom) {
-            callbacks[i]();
+          if (Context.scale.y == 1) {
+            if (left <= event.position.x &&
+                event.position.x <= right &&
+                top <= event.position.y &&
+                event.position.y <= bottom) {
+              callbacks[i]();
+            }
+          } else {
+            if (left <= event.position.x &&
+                event.position.x <= right &&
+                bottom <= event.position.y &&
+                event.position.y <= top) {
+              callbacks[i]();
+            }
           }
         }
       }

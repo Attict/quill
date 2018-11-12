@@ -20,20 +20,32 @@ class Scene extends Quill {
     return _position;
   }
 
+  SizeComponent _size;
+  SizeComponent get size {
+    if (_size == null) {
+      SizeComponent size = getComponent<SizeComponent>();
+      if (size == null) {
+        size = addComponent<SizeComponent>(new SizeComponent());
+      }
+      _size = size;
+    }
+    return _size;
+  }
+
   get camera => getComponent<CameraComponent>();
 
   void initWithBackground(Color color, {Texture texture}) {
     if (!initialized) {
       addComponent<ColorComponent>(new ColorComponent())..setColor(color);
-      addComponent<PositionComponent>(new PositionComponent())
-        ..setPosition(0.0, 0.0);
-      addComponent<SizeComponent>(new SizeComponent())
-        ..setSize(Context.width, Context.height);
       initialized = true;
     }
   }
 
   void setSize(double width, double height) {
+    if (!hasComponent<SizeComponent>()) {
+      addComponent<SizeComponent>(new SizeComponent());
+    }
+    size.setSize(width, height);
   }
 
   void setPosition(double x, double y) {
@@ -60,7 +72,7 @@ class Scene extends Quill {
     }
     camera.translate(x, y);
     if (fixedPosition) {
-      setPosition(x, y);
+      setPosition(x + position.x, y + position.y);
     }
   }
 
