@@ -15,8 +15,8 @@ class CollisionComponent extends Component {
   }
 
   bool isColliding(Quill quill, {double relativeLeft = 0.0, 
-        double relativeTop = 0.0, double relativeRight = 100.0, 
-        double relativeBottom = 100.0}) {
+        double relativeTop = 0.0, double relativeRight = 1.0, 
+        double relativeBottom = 1.0}) {
     PositionComponent position = this.quill.getComponent<PositionComponent>();
     SizeComponent size = this.quill.getComponent<SizeComponent>();
     PositionComponent quillPosition = quill.getComponent<PositionComponent>();
