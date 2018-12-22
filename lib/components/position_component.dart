@@ -10,8 +10,10 @@ class PositionComponent extends Component {
   double get y => _y;
   set y(double y) => _y = y;
   Point get drawAt => new Point(x - offset.x, y - offset.y);
+
   Point get offset => _offset;
   set offset(Point offset) => _offset = offset;
+  
   Origin get origin => _origin;
   set origin(Origin origin) {
     _origin = origin;
@@ -31,11 +33,11 @@ class PositionComponent extends Component {
     switch (origin) {
       case Origin.top_center:
         offsetX = 0.5 * width;
-        offsetY = 0.0;
+        offsetY = (Context.scale.y == -1) ? height : 0.0;
         break;
       case Origin.top_right:
         offsetX = width;
-        offsetY = 0.0;
+        offsetY = (Context.scale.y == -1) ? height : 0.0;
         break;
       case Origin.center_left:
         offsetX = 0.0;
@@ -51,19 +53,19 @@ class PositionComponent extends Component {
         break;
       case Origin.bottom_left:
         offsetX = 0.0;
-        offsetY = (Context.scale.y == 1) ? height : 0.0;
+        offsetY = (Context.scale.y == -1) ? 0.0 : height;
         break;
       case Origin.bottom_center:
         offsetX = 0.5 * width;
-        offsetY = height;
+        offsetY = (Context.scale.y == -1) ? 0.0 : height;
         break;
       case Origin.bottom_right:
         offsetX = width;
-        offsetY = height;
+        offsetY = (Context.scale.y == -1) ? 0.0 : height;
         break;
       default:
         offsetX = 0.0;
-        offsetY = 0.0;
+        offsetY = (Context.scale.y == -1) ? height : 0.0;
     }
     _offset = new Point(offsetX, offsetY);
   }

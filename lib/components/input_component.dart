@@ -14,15 +14,18 @@ class InputComponent extends Component {
     PositionComponent position = quill.getComponent<PositionComponent>();
     SizeComponent size = quill.getComponent<SizeComponent>();
 
+    print('${position.x}, ${position.y}, ${size.width}, ${size.height}');
+
+
     for (int i = 0; i < callbacks.length; i++) {
       if (eventTypes[i] == event.type) {
         if (position == null || size == null) {
           callbacks[i]();
         } else {
-          double left = position.drawAt.x * Context.scale.x;
-          double top = position.drawAt.y * Context.scale.y;
-          double right = (position.drawAt.x + size.width) * Context.scale.x;
-          double bottom = (position.drawAt.y + size.height) * Context.scale.y;
+          double left = position.drawAt.x;
+          double top = position.drawAt.y;
+          double right = (position.drawAt.x + size.width);
+          double bottom = (position.drawAt.y + size.height);
 
           /// This should be using the baseX and baseY, but for some reason,
           /// it only works with this setup.  For now skipping.

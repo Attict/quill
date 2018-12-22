@@ -15,9 +15,9 @@ class CameraComponent extends Component {
   void translate(double x, double y) {
     this.x = x;
     this.y = y;
-    if (Context.scale.y == -1) {
-      y += Context.height;
-    }
+    // if (Context.scale.y == -1) {
+    //   y += Context.height;
+    // }
     Context.translate = new Point(x, y);
   }
 
