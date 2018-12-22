@@ -1,5 +1,10 @@
 library quill;
 
+
+/// TODO:
+/// Refactor quill by forming complete quills without 
+/// components, then flesh them out into components.
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -154,6 +159,7 @@ class QuillEngine {
     for (PointerData datum in packet.data) {
       double x = (scaleX * datum.physicalX - Context.translate.x) * Context.scale.x;
       double y = (scaleY * datum.physicalY - Context.translate.y) * Context.scale.y;
+      print('$x, $y');
       Event event;
       if (datum.change == PointerChange.up) {
         event = new Event(Event.touchup, new Point(x, y));
