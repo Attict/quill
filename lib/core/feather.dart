@@ -6,9 +6,9 @@ class Feather {
   String name;
 
   void init() {
-    for (final feather in feathers.values) {
-      feather.init();
-    }
+    // for (final feather in feathers.values) {
+    //   feather.init();
+    // }
   }
 
   void dispose() {
@@ -52,6 +52,7 @@ class Feather {
       feathers[name] = (feather != null) ? feather : new Feather();
       feathers[name].parent = this;
       feathers[name].name = name;
+      feathers[name].init();
     }
     return feathers[name];
   }

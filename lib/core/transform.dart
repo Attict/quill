@@ -1,7 +1,7 @@
 part of quill;
 
 class Transform {
-  Point translate;
+  Point position;
   double rotation;
   Point scale;
 }

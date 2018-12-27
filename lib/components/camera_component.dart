@@ -17,8 +17,8 @@ class CameraComponent extends Component {
       origin = new Origin(Origin.center);
     }
 
-    if (transform.translate == null) {
-      transform.translate = new Point(0.0, 0.0);
+    if (transform.position == null) {
+      transform.position = new Point(0.0, 0.0);
     }
 
     if (transform.rotation == null) {
@@ -40,13 +40,13 @@ class CameraComponent extends Component {
   void render(Context context) {
     super.render(context); 
 
-    double translateScaleX = (transform.scale.x < 0) 
+    double positionScaleX = (transform.scale.x < 0) 
         ? getSize().width * -transform.scale.x : 0.0;
-    double translateScaleY = (transform.scale.y < 0) 
+    double positionScaleY = (transform.scale.y < 0) 
         ? getSize().height * -transform.scale.y : 0.0;
 
-    context.canvas.translate(transform.translate.x + translateScaleX, 
-        transform.translate.y + translateScaleY);
+    context.canvas.translate(transform.position.x + positionScaleX, 
+        transform.position.y + positionScaleY);
     context.canvas.rotate(
         transform.rotation);
     context.canvas.scale(
@@ -58,7 +58,7 @@ class CameraComponent extends Component {
   }
 
   void setTranslate(double x, double y) {
-    transform.translate = new Point(x, y);
+    transform.position = new Point(x, y);
   }
 
   void setRotation(double rotation) {

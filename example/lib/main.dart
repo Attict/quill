@@ -8,27 +8,22 @@ void main() {
 class Application extends Feather {
   @override
   void init() {
-    addFeather('game_scene', new GameScene());
     super.init();
+    addFeather('game_scene', new GameScene());
   }
 }
 
-class GameScene extends Quill {
+class GameScene extends Scene {
   @override
   void init() {
-    addComponent<CameraComponent>(new CameraComponent())
-      ..setTranslate(0.0, 0.0)
-      ..setScale(1.0, -1.0);
-
     super.init();
-  }
+    setTranslate(0.0, 0.0);
+    setScale(1.0, -1.0);
 
-  @override
-  void render(Context context) {
-    super.render(context);
-
-    final Rect rect = new Rect(10.0, 10.0, 50.0, 50.0);
-    context.drawRect(rect, color: new Color(0xFFFF0000));
+    addSprite('sprite', new Sprite())
+      ..setSize(50.0, 50.0)
+      ..setPosition(50.0, 50.0)
+      ..setColor(new Color(0xFF00FF00));
   }
 }
 

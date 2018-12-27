@@ -28,9 +28,13 @@ part './core/timer.dart';
 part './core/transform.dart';
 
 part './components/camera_component.dart';
+part './components/color_component.dart';
 part './components/size_component.dart';
+part './components/texture_component.dart';
+part './components/transform_component.dart';
 
 part './quills/scene.dart';
+part './quills/sprite.dart';
 
 //////////////////////////////////////
 /// Quill Engine
