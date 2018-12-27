@@ -1,86 +1,79 @@
 part of quill;
 
 class Feather {
-  bool active = true;
-  final Map<String, Feather> _feathers = new Map<String, Feather>();
-  Map<String, Feather> get feathers => _feathers;
+  final Map<String, Feather> feathers = new Map<String, Feather>();
   Feather parent;
+  String name;
 
   void init() {
-    for (final feather in _feathers.values) {
+    for (final feather in feathers.values) {
       feather.init();
     }
   }
 
   void dispose() {
-    for (final feather in _feathers.values) {
+    for (final feather in feathers.values) {
       feather.dispose();
     }
   }
 
   void load() {
-    for (final feather in _feathers.values) {
+    for (final feather in feathers.values) {
       feather.load();
     }
   }
 
   void unload() {
-    for (final feather in _feathers.values) {
+    for (final feather in feathers.values) {
       feather.unload();
     }
   }
 
   void input(Event event) {
-    for (final feather in _feathers.values) {
-      if (feather.active) {
-        feather.input(event);
-      }
+    for (final feather in feathers.values) {
+      feather.input(event);
     }
   }
 
   void update(Time time) {
-    for (final feather in _feathers.values) {
-      if (feather.active) {
-        feather.update(time);
-      }
+    for (final feather in feathers.values) {
+      feather.update(time);
     }
   }
 
   void render(Context context) {
-    for (final feather in _feathers.values) {
-      if (feather.active) {
-        feather.render(context);
-      }
+    for (final feather in feathers.values) {
+      feather.render(context);
     }
   }
 
   T addFeather<T extends Feather>(String name, [Feather feather]) {
-    if (_feathers[name] == null) {
-      _feathers[name] = (feather != null) ? feather : new Feather();
-      _feathers[name].parent = this;
-      _feathers[name].init();
+    if (feathers[name] == null) {
+      feathers[name] = (feather != null) ? feather : new Feather();
+      feathers[name].parent = this;
+      feathers[name].name = name;
     }
-    return _feathers[name];
+    return feathers[name];
   }
 
   void removeFeather(String name) {
-    if (_feathers[name] != null) {
-      _feathers[name].unload();
-      _feathers[name].dispose();
-      _feathers[name] = null;
-      _feathers.remove(name);
+    if (feathers[name] != null) {
+      feathers[name].unload();
+      feathers[name].dispose();
+      feathers[name] = null;
+      feathers.remove(name);
     }
   }
 
   T getFeather<T extends Feather>(String name) {
-    if (_feathers[name] != null) {
-      return _feathers[name];
+    if (feathers[name] != null) {
+      return feathers[name];
     }
     return null;
   }
 
   @override
   String toString() {
-    return '';
+    return 'Feather "$name" : Child of "${parent.name}"';
   }
 }

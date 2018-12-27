@@ -6,12 +6,12 @@ class Texture {
   final String filename;
 
   /// The Image itself
-  Image image;
+  ui.Image image;
 
   /// Used to make sure the image is only loaded once,
   /// and that a single texture's load is only called once,
   /// but completed at the same time.
-  Completer<Image> completer;
+  Completer<ui.Image> completer;
 
   /// Create the texture by filename
   Texture(this.filename);
@@ -23,7 +23,7 @@ class Texture {
       ByteData data = await rootBundle.load('assets/images/$filename');
       Uint8List bytes = new Uint8List.view(data.buffer);
       if (!completer.isCompleted) {
-        decodeImageFromList(bytes, (image) => completer.complete(image));
+        ui.decodeImageFromList(bytes, (image) => completer.complete(image));
       }
     }
     image = await completer.future;

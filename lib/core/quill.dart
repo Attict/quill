@@ -1,19 +1,19 @@
 part of quill;
 
 class Quill extends Feather {
-  List<Component> _components = new List<Component>();
+  List<Component> components = new List<Component>();
 
   @override
   void init() {
-    for (final component in _components) {
-      component.init();
-    }
+    // for (final component in components) {
+    //   component.init();
+    // }
     super.init();
   }
 
   @override
   void dispose() {
-    for (final component in _components) {
+    for (final component in components) {
       component.dispose();
     }
     super.dispose();
@@ -21,7 +21,7 @@ class Quill extends Feather {
 
   @override
   void load() {
-    for (final component in _components) {
+    for (final component in components) {
       component.load();
     }
     super.load();
@@ -29,7 +29,7 @@ class Quill extends Feather {
 
   @override
   void unload() {
-    for (final component in _components) {
+    for (final component in components) {
       component.unload();
     }
     super.unload();
@@ -37,7 +37,7 @@ class Quill extends Feather {
 
   @override
   void input(Event event) {
-    for (final component in _components) {
+    for (final component in components) {
       component.input(event);
     }
     super.input(event);
@@ -45,7 +45,7 @@ class Quill extends Feather {
 
   @override
   void update(Time time) {
-    for (final component in _components) {
+    for (final component in components) {
       component.update(time);
     }
     super.update(time);
@@ -53,7 +53,7 @@ class Quill extends Feather {
 
   @override
   void render(Context context) {
-    for (final component in _components) {
+    for (final component in components) {
       component.render(context);
     }
     super.render(context);
@@ -62,7 +62,8 @@ class Quill extends Feather {
   T addComponent<T extends Component>(T component) {
     if (!hasComponent<T>()) {
       component.quill = this;
-      _components.add(component);
+      component.init();
+      components.add(component);
       return component;
     }
     return getComponent<T>();
@@ -72,12 +73,12 @@ class Quill extends Feather {
     Component component = getComponent<T>();
     if (component != null) {
       component.dispose();
-      _components.remove(component);
+      components.remove(component);
     }
   }
 
   T getComponent<T extends Component>() {
-    for (final component in _components) {
+    for (final component in components) {
       if (component is T) {
         return component;
       }
@@ -91,4 +92,5 @@ class Quill extends Feather {
     }
     return false;
   }
+
 }

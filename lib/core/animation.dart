@@ -40,7 +40,7 @@ class Animation {
         double y = (i / horizontalFrames).floor().toDouble();
         addFrame(
             presets['duration'],
-            Rect.fromLTWH(x * presets['width'], y * presets['height'],
+            new Rect(x * presets['width'], y * presets['height'],
                 presets['width'], presets['height']));
       }
 
@@ -51,7 +51,7 @@ class Animation {
           double y = (i / horizontalFrames).floor().toDouble();
           addFrame(
               presets['duration'],
-              Rect.fromLTWH(x * presets['width'], y * presets['height'],
+              new Rect(x * presets['width'], y * presets['height'],
                   presets['width'], presets['height']));
         }
       }
