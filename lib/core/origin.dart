@@ -16,7 +16,7 @@ class Origin {
   Point _offset;
   Size _objectSize;
 
-  Origin(this._value, [this._offset]);
+  Origin([this._value = 5, this._offset]);
 
   Point get offset {
     switch (_value) {

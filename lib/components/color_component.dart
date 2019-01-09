@@ -12,7 +12,7 @@ class ColorComponent extends Component {
     if (!quill.hasComponent<TransformComponent>()) {
       quill.addComponent<TransformComponent>(new TransformComponent());
     }
-
+    
     if (!quill.hasComponent<SizeComponent>()) {
       quill.addComponent<SizeComponent>(new SizeComponent());
     }
@@ -21,7 +21,8 @@ class ColorComponent extends Component {
   @override
   void render(Context context) {
     super.render(context);
-    final position = quill.getComponent<TransformComponent>().position;
+    final transform = quill.getComponent<TransformComponent>();
+    final position = transform.position;
     final size = quill.getComponent<SizeComponent>();
 
     final destination = new Rect(position.x, position.y, size.width, size.height);

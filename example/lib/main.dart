@@ -1,10 +1,16 @@
 import 'package:quill/quill.dart';
 
+/// Main
+/// 
+/// 
 void main() {
   new QuillEngine(new Application())
     ..start();
 }
 
+/// Application
+/// 
+/// 
 class Application extends Feather {
   @override
   void init() {
@@ -13,6 +19,9 @@ class Application extends Feather {
   }
 }
 
+/// Game Scene
+/// 
+/// 
 class GameScene extends Scene {
   @override
   void init() {
@@ -24,6 +33,17 @@ class GameScene extends Scene {
       ..setSize(50.0, 50.0)
       ..setPosition(50.0, 50.0)
       ..setColor(new Color(0xFF00FF00));
+  }
+
+  @override
+  void update(Time time) {
+    super.update(time);
+    
+    //Sprite sprite = getSprite('sprite');
+    //sprite.x += time.elapsedSeconds * 50;
+    //if (sprite.x >= Context.width) {
+    //  sprite.x = 0 - sprite.width;
+    //}
   }
 }
 

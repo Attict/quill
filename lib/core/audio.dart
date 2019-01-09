@@ -19,7 +19,7 @@ class Audio {
   Future<Null> dispose() async {}
 
   Future<Null> load() async {
-    String basepath = await QuillEngine.basePath;
+    String basepath = QuillEngine.applicationPath;
     basepath = '$basepath/flutter_assets/assets/audio';
     final String filepath = '$basepath/$filename';
     await QuillEngine.channel.invokeMethod('addAudio',

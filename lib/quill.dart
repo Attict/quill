@@ -36,35 +36,54 @@ part './components/transform_component.dart';
 part './quills/scene.dart';
 part './quills/sprite.dart';
 
-//////////////////////////////////////
-/// Quill Engine
-//////////////////////////////////////
-
+/// QuillEngine
+///
+///
 class QuillEngine {
+  /// Quill Channel
+  ///
+  ///
   static const MethodChannel channel = const MethodChannel('quill');
 
-  /// Properties
+  /// Application path for documents
+  ///
+  ///
+  static String applicationPath;
+
+  /// Application
+  ///
+  ///
   final Feather application;
+
+  /// Frames per second
+  ///
+  ///
   final double fps;
 
-  /// Private
+  /// Landscape vs portrait
+  /// default to portrait
+  ///
+  final bool landscape;
+
+  /// Last update
+  ///
+  ///
   Duration _lastUpdate;
 
-  /// Constructor
-  QuillEngine(this.application, {this.fps: 60.0});
 
-  static String _basePath;
-  static Future<String> get basePath async {
-    if (_basePath == null) {
-      final Map<dynamic, dynamic> result = await channel.invokeMethod('basePath');
-      _basePath = result['path'];
-    }
-    return _basePath;
-  }
+  /// Constructor
+  ///
+  ///
+  QuillEngine(this.application, {this.fps: 60.0, this.landscape: false});
 
   /// Start
+  ///
+  ///
   Future<Null> start() async {
     await initialize();
+
+    final Map<dynamic, dynamic> result = await channel.invokeMethod('basePath');
+    applicationPath = result['path'];
 
     /// TODO: This should not happen here
     application.load();
@@ -75,6 +94,9 @@ class QuillEngine {
     ui.window.scheduleFrame();
   }
 
+  /// Initialize
+  ///
+  ///
   Future<Null> initialize() async {
     final ui.Size screenSize = await getScreenSize();
     Context.width = screenSize.width;
@@ -82,6 +104,9 @@ class QuillEngine {
     application.init();
   }
 
+  /// Run
+  ///
+  ///
   void run(Duration timeStamp) {
     /// LOAD:
     /// UNLOAD:
@@ -123,10 +148,15 @@ class QuillEngine {
   }
   
   /// Handle input into the application
+  ///
+  ///
   void handleInput(ui.PointerDataPacket packet) {
 
   }
 
+  /// Get screen size
+  ///
+  ///
   Future<ui.Size> getScreenSize() async {
     final ui.Size screenSize = await new Future<ui.Size>(() {
       if (ui.window.physicalSize.isEmpty) {

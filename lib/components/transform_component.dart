@@ -2,10 +2,13 @@ part of quill;
 
 class TransformComponent extends Component {
   Transform _transform;
+  Origin _origin;
 
   Point get position => _transform.position;
   double get rotation => _transform.rotation;
   Point get scale => _transform.scale;
+  Origin get origin => _origin;
+  
 
   @override
   void init() {
@@ -28,5 +31,9 @@ class TransformComponent extends Component {
   void setScale(double x, double y) {
     _transform.scale.x = x;
     _transform.scale.y = y;
+  }
+
+  void setOrigin(Origin origin) {
+    _origin = origin;
   }
 }

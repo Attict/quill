@@ -28,7 +28,7 @@ class Scene extends Quill {
     return sprite;
   }
 
-  void getSprite(String name) {
-
+  Sprite getSprite(String name) {
+    return getFeather(name) as Sprite;
   }
 }

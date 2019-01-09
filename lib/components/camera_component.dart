@@ -4,9 +4,6 @@ class CameraComponent extends Component {
   Origin origin;
   final Transform transform = new Transform();
 
-  CameraComponent() {
-  }
-
   /// Initialize each component with the default settings,
   /// initializing any components that it depends on.
   @override
