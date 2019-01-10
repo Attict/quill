@@ -48,8 +48,11 @@ class Sprite extends Quill {
     _transform.setPosition(x, y);
   }
 
-  void setOrigin(Origin origin) {
-    _transform.setOrigin(origin);
+  /// Set origin
+  /// 
+  /// 
+  void setOrigin(int origin) {
+    _transform.setOrigin(new Origin(origin));
   }
 
   /// Set color

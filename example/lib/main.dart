@@ -32,7 +32,8 @@ class GameScene extends Scene {
     addSprite('sprite', new Sprite())
       ..setSize(50.0, 50.0)
       ..setPosition(50.0, 50.0)
-      ..setColor(new Color(0xFF00FF00));
+      ..setColor(new Color(0xFF00FF00))
+      ..setOrigin(Origin.bottom_right);
   }
 
   @override

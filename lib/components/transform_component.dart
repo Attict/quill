@@ -8,7 +8,6 @@ class TransformComponent extends Component {
   double get rotation => _transform.rotation;
   Point get scale => _transform.scale;
   Origin get origin => _origin;
-  
 
   @override
   void init() {
