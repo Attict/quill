@@ -151,7 +151,21 @@ class QuillEngine {
   ///
   ///
   void handleInput(ui.PointerDataPacket packet) {
-
+    // double scaleX = Context.width / window.physicalSize.width;
+    // double scaleY = Context.height / window.physicalSize.height;
+    for (ui.PointerData datum in packet.data) {
+      // double x = scaleX * datum.physicalX - Context.width / 2;
+      // double y = scaleY * datum.physicalY - Context.height / 2;
+      Event event;
+      if (datum.change == ui.PointerChange.up) {
+        event = new Event(Event.touchup, new Point(0.0, 0.0));
+      } else if (datum.change == ui.PointerChange.down) {
+        event = new Event(Event.touchdown, new Point(0.0, 0.0));
+      }
+      if (event != null) {
+        application.input(event);
+      }
+    }
   }
 
   /// Get screen size

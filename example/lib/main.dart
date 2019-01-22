@@ -1,4 +1,6 @@
 import 'package:quill/quill.dart';
+import 'dart:math';
+
 
 /// Main
 /// 
@@ -23,22 +25,34 @@ class Application extends Feather {
 /// 
 /// 
 class GameScene extends Scene {
+  final User user = new User();
+  final List<Platform> platforms = new List<Platform>(10);
+
   @override
   void init() {
     super.init();
     setTranslate(0.0, 0.0);
     setScale(1.0, -1.0);
 
-    addSprite('sprite', new Sprite())
-      ..setSize(50.0, 50.0)
-      ..setPosition(50.0, 50.0)
-      ..setColor(new Color(0xFF00FF00))
-      ..setOrigin(Origin.bottom_right);
+    for (int i = 0; i < 10; i++) {
+      platforms[i] = new Platform(i);
+      addSprite('platform-$i', platforms[i]);
+    }
+    addSprite('user', user);
   }
 
   @override
   void update(Time time) {
     super.update(time);
+
+    if (user.state == User.falling) {
+      for (final platform in platforms) {
+        if (platform.canLand(user)) {
+          print('something');
+          user.setPlatform(platform);
+        } 
+      }
+    }
     
     //Sprite sprite = getSprite('sprite');
     //sprite.x += time.elapsedSeconds * 50;
@@ -47,6 +61,128 @@ class GameScene extends Scene {
     //}
   }
 }
+
+class User extends Sprite {
+  static int standing = 0;
+  static int jumping = 1;
+  static int falling = 2;
+  static int sleeping = 10;
+
+  int state;
+  double jumpTo;
+  double offset;
+  Platform platform;
+
+  @override
+  void init() {
+    super.init();
+    setSize(50.0, 100.0); 
+    setPosition(Context.width / 2 - width / 2, 0);
+    setColor(new Color(0xFFFF0000));
+    state = standing;
+    offset = 0;
+  }
+
+  @override
+  void input(Event event) {
+    super.input(event);
+    if (state == standing) {
+      jumpTo = y + 200.0;
+      state = jumping;
+      offset = 0;
+      platform = null;
+    }
+  }
+
+  @override
+  void update(Time time) {
+    super.update(time);
+    if (state == jumping) {
+      y += 300.0 * time.elapsedSeconds;
+      if (y > jumpTo) {
+        state = falling;
+      }
+    } else if (state == falling) {
+      y -= 300.0 * time.elapsedSeconds;
+
+      if (y < 0) {
+        y = 0;
+        state = standing;
+      }
+    } else {
+      // if platform not null
+      if (platform != null) {
+        x = platform.x + offset;
+      }
+    }
+  }
+
+  void setPlatform(Platform platform) {
+    this.platform = platform;
+    state = standing;
+    y = platform.y + platform.height;
+    offset = x - platform.x;
+  }
+}
+
+class Platform extends Sprite {
+  final double minimumSpeed = 100.0;
+  final double maximumSpeed = 380.0;
+
+  final int index;
+  int direction;
+  double speed;
+
+  Platform(this.index);
+
+  @override
+  void init() {
+    super.init();
+
+    setSize(100.0, 10.0);
+
+    final Random random = new Random(index);
+    direction = (random.nextBool()) ? 1 : -1;
+    final double x = random.nextDouble() * (Context.width - width);
+    speed = random.nextDouble() * maximumSpeed;
+    speed = (speed < minimumSpeed) ? minimumSpeed : speed;
+
+    setPosition(x, (index + 1) * 150.0);
+    setColor(new Color(0xFF00FF00)); 
+  }
+
+  @override
+  void update(Time time) {
+    super.update(time);
+
+    x += direction * (speed * time.elapsedSeconds);
+    if (x >= Context.width - width) {
+      x = Context.width - width;
+      direction *= -1;
+    } else if (x <= 0) {
+      x = 0;
+      direction *= -1;
+    }
+
+  }
+
+  bool canLand(User user) {
+    final double userLeft = user.x + user.width * 0.25;
+    final double userRight = user.x + user.width * 0.75;
+    final double userY = user.y;
+    if (index == 0) {
+    }
+    if (y < userY && userY < y + height) {
+      if (x < userLeft && userRight < x + width) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+}
+
+
 
 
 
