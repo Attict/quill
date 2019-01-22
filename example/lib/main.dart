@@ -44,25 +44,27 @@ class GameScene extends Scene {
   @override
   void update(Time time) {
     super.update(time);
-
     if (user.state == User.falling) {
       for (final platform in platforms) {
         if (platform.canLand(user)) {
-          print('something');
           user.setPlatform(platform);
+          setTranslate(0, platform.y - 200);
         } 
       }
     }
-    
-    //Sprite sprite = getSprite('sprite');
-    //sprite.x += time.elapsedSeconds * 50;
-    //if (sprite.x >= Context.width) {
-    //  sprite.x = 0 - sprite.width;
-    //}
+
+    if (user.state == User.standing && user.platform == null) {
+      setTranslate(0, 0);
+    }
+  }
+
+  void updateCamera() {
+
   }
 }
 
 class User extends Sprite {
+  /// The user states
   static int standing = 0;
   static int jumping = 1;
   static int falling = 2;
@@ -104,7 +106,6 @@ class User extends Sprite {
       }
     } else if (state == falling) {
       y -= 300.0 * time.elapsedSeconds;
-
       if (y < 0) {
         y = 0;
         state = standing;
@@ -170,8 +171,6 @@ class Platform extends Sprite {
     final double userLeft = user.x + user.width * 0.25;
     final double userRight = user.x + user.width * 0.75;
     final double userY = user.y;
-    if (index == 0) {
-    }
     if (y < userY && userY < y + height) {
       if (x < userLeft && userRight < x + width) {
         return true;
@@ -179,7 +178,6 @@ class Platform extends Sprite {
     }
     return false;
   }
-
 }
 
 
