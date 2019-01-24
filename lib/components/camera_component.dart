@@ -69,4 +69,9 @@ class CameraComponent extends Component {
   Size getSize() {
     return quill.getComponent<SizeComponent>().getSize();
   }
+
+  Point getTranslate() {
+    return transform.position;
+  }
+
 }

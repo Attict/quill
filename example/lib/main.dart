@@ -2,16 +2,16 @@ import 'package:quill/quill.dart';
 import 'dart:math';
 
 
-/// Main
-/// 
+///
+/// MAIN
 /// 
 void main() {
   new QuillEngine(new Application())
     ..start();
 }
 
-/// Application
-/// 
+///
+/// APPLICATION
 /// 
 class Application extends Feather {
   @override
@@ -21,26 +21,37 @@ class Application extends Feather {
   }
 }
 
-/// Game Scene
-/// 
+///
+/// GAME SCENE
 /// 
 class GameScene extends Scene {
   final User user = new User();
   final List<Platform> platforms = new List<Platform>(10);
 
+  ///
+  /// INIT
+  /// 
   @override
   void init() {
     super.init();
-    setTranslate(0.0, 0.0);
     setScale(1.0, -1.0);
+    setTranslate(0.0, 0.0);
+    setColor(new Color(0xFF73b0ff));
 
+    final Texture texture = new Texture('platform.png');
     for (int i = 0; i < 10; i++) {
-      platforms[i] = new Platform(i);
+      final TextureComponent textureComponent = new TextureComponent()
+        ..setTexture(texture)
+        ..setSource(new Rect(0, 0, 301, 72));
+      platforms[i] = new Platform(i)..addComponent<TextureComponent>(textureComponent);
       addSprite('platform-$i', platforms[i]);
     }
     addSprite('user', user);
   }
 
+  ///
+  /// UPDATE
+  /// 
   @override
   void update(Time time) {
     super.update(time);
@@ -48,43 +59,81 @@ class GameScene extends Scene {
       for (final platform in platforms) {
         if (platform.canLand(user)) {
           user.setPlatform(platform);
-          setTranslate(0, platform.y - 200);
         } 
       }
     }
 
-    if (user.state == User.standing && user.platform == null) {
-      setTranslate(0, 0);
+    shufflePlatforms();
+    updateCamera(time);
+  }
+
+  ///
+  /// UPDATE CAMERA
+  /// 
+  void updateCamera(Time time) {
+    if (user.y > 100) {
+      setTranslate(0, user.y - 100);
+    } else {
+      int direction = (user.platform != null) ? 1 : -1;
+      double cameraY = camera.getTranslate().y + (200.0 * direction) * time.elapsedSeconds;
+      cameraY = (cameraY < 0) ? 0 : cameraY;
+      setTranslate(0, cameraY);
     }
   }
 
-  void updateCamera() {
+  ///
+  /// SHUFFLE PLATFORMS
+  /// 
+  void shufflePlatforms() {
+      int start = user.score - 5;
+      start = (start < 1) ? 1 : start;
+      int end = start + 9;
 
+      for (int i = start; i <= end; i++) {
+          var index = (i - 1) % 10;
+          if (platforms[index].value != i) {
+            platforms[index].reset(i);
+          }
+      }
   }
 }
 
+///
+/// [CLASS]
+///   User
 class User extends Sprite {
-  /// The user states
+  /// 
+  /// User States
+  /// 
   static int standing = 0;
   static int jumping = 1;
   static int falling = 2;
   static int sleeping = 10;
 
+  ///
+  /// PROPERTIES
+  /// 
+  int score = 0;
   int state;
   double jumpTo;
   double offset;
   Platform platform;
 
+  ///
+  /// INIT
+  /// 
   @override
   void init() {
     super.init();
     setSize(50.0, 100.0); 
     setPosition(Context.width / 2 - width / 2, 0);
-    setColor(new Color(0xFFFF0000));
+    setColor(new Color(0xFF0000FF));
     state = standing;
     offset = 0;
   }
 
+  /// 
+  /// INPUT
   @override
   void input(Event event) {
     super.input(event);
@@ -96,6 +145,9 @@ class User extends Sprite {
     }
   }
 
+  /// 
+  /// UPDATE
+  /// 
   @override
   void update(Time time) {
     super.update(time);
@@ -118,40 +170,55 @@ class User extends Sprite {
     }
   }
 
+  ///
+  /// SET PLATFORM
+  /// 
+  /// Sets the current platform that the user
+  /// is on.
   void setPlatform(Platform platform) {
     this.platform = platform;
     state = standing;
     y = platform.y + platform.height;
     offset = x - platform.x;
+    score = platform.value;
   }
 }
 
+///
+/// [CLASS]
+///   PLATFORM
+/// 
 class Platform extends Sprite {
   final double minimumSpeed = 100.0;
-  final double maximumSpeed = 380.0;
+  final double maximumSpeed = 350.0;
+  final double distance = 150.0;
 
   final int index;
   int direction;
   double speed;
+  int value;
 
+  /// 
+  /// CONSTRUCTOR
+  /// 
   Platform(this.index);
 
+  ///
+  /// INIT
   @override
   void init() {
     super.init();
 
+    value = index;
+
     setSize(100.0, 10.0);
 
-    final Random random = new Random(index);
-    direction = (random.nextBool()) ? 1 : -1;
-    final double x = random.nextDouble() * (Context.width - width);
-    speed = random.nextDouble() * maximumSpeed;
-    speed = (speed < minimumSpeed) ? minimumSpeed : speed;
-
-    setPosition(x, (index + 1) * 150.0);
-    setColor(new Color(0xFF00FF00)); 
+    reset(index + 1);
   }
 
+  ///
+  /// UPDATE
+  /// 
   @override
   void update(Time time) {
     super.update(time);
@@ -167,9 +234,13 @@ class Platform extends Sprite {
 
   }
 
+  /// 
+  /// CAN LAND
+  /// 
+  /// The user can land on this platform.
   bool canLand(User user) {
-    final double userLeft = user.x + user.width * 0.25;
-    final double userRight = user.x + user.width * 0.75;
+    final double userLeft = user.x + user.width * 0.1;
+    final double userRight = user.x + user.width * 0.9;
     final double userY = user.y;
     if (y < userY && userY < y + height) {
       if (x < userLeft && userRight < x + width) {
@@ -177,6 +248,20 @@ class Platform extends Sprite {
       }
     }
     return false;
+  }
+
+  /// 
+  /// RESET
+  ///
+  void reset(int value) {
+    final Random random = new Random(value);
+    direction = (random.nextBool()) ? 1 : -1;
+    speed = random.nextDouble() * maximumSpeed;
+    speed = (speed < minimumSpeed) ? minimumSpeed : speed;
+    final double x = random.nextDouble() * (Context.width - width);
+    final double y = value * distance;
+    setPosition(x, y);
+    this.value = value;
   }
 }
 

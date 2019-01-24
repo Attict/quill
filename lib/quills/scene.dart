@@ -1,6 +1,7 @@
 part of quill;
 
 class Scene extends Quill {
+
   @override
   void init() {
     super.init();
@@ -17,6 +18,9 @@ class Scene extends Quill {
 
   void setTranslate(double x, double y) {
     camera.setTranslate(x, y);
+    if (hasComponent<TransformComponent>()) {
+      getComponent<TransformComponent>().setPosition(x, y);
+    }
   }
 
   void setScale(double x, double y) {
@@ -30,5 +34,14 @@ class Scene extends Quill {
 
   Sprite getSprite(String name) {
     return getFeather(name) as Sprite;
+  }
+
+  void setColor(Color color) {
+    addComponent<SizeComponent>(new SizeComponent())
+      ..setSize(new Size(Context.width, Context.height));
+    addComponent<TransformComponent>(new TransformComponent())
+      ..setPosition(0.0, 0.0);
+    addComponent<ColorComponent>(new ColorComponent())
+      ..color = color;
   }
 }
