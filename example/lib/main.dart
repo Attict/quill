@@ -34,7 +34,7 @@ class GameScene extends Scene {
   @override
   void init() {
     super.init();
-    setScale(1.0, -1.0);
+    setScale(1.0, 1.0);
     setTranslate(0.0, 0.0);
     setColor(new Color(0xFF73b0ff));
 
@@ -71,30 +71,35 @@ class GameScene extends Scene {
   /// UPDATE CAMERA
   /// 
   void updateCamera(Time time) {
-    if (user.y > 100) {
-      setTranslate(0, user.y - 100);
-    } else {
-      int direction = (user.platform != null) ? 1 : -1;
-      double cameraY = camera.getTranslate().y + (200.0 * direction) * time.elapsedSeconds;
-      cameraY = (cameraY < 0) ? 0 : cameraY;
-      setTranslate(0, cameraY);
+    if (user.y + user.height < Context.height - 100) {
+      double y = Context.height - (user.y + user.height) - 100;
+      setTranslate(0, y);
+      getComponent<TransformComponent>().setPosition(0, y * -1);
     }
+    //if (user.y + user.height < Context.height - 100) {
+
+    //} else {
+    //  int direction = (user.platform != null) ? 1 : -1;
+    //  double cameraY = camera.getTranslate().y - (200.0 * direction) * time.elapsedSeconds;
+    //  cameraY = (cameraY > 0) ? 0 : cameraY;
+    //  setTranslate(0, cameraY);
+    //}
   }
 
   ///
   /// SHUFFLE PLATFORMS
   /// 
   void shufflePlatforms() {
-      int start = user.score - 5;
-      start = (start < 1) ? 1 : start;
-      int end = start + 9;
+    int start = user.score - 5;
+    start = (start < 1) ? 1 : start;
+    int end = start + 9;
 
-      for (int i = start; i <= end; i++) {
-          var index = (i - 1) % 10;
-          if (platforms[index].value != i) {
-            platforms[index].reset(i);
-          }
-      }
+    for (int i = start; i <= end; i++) {
+        var index = (i - 1) % 10;
+        if (platforms[index].value != i) {
+          platforms[index].reset(i);
+        }
+    }
   }
 }
 
@@ -126,7 +131,7 @@ class User extends Sprite {
   void init() {
     super.init();
     setSize(50.0, 100.0); 
-    setPosition(Context.width / 2 - width / 2, 0);
+    setPosition(Context.width / 2 - width / 2, Context.height - height);
     setColor(new Color(0xFF0000FF));
     state = standing;
     offset = 0;
@@ -138,7 +143,7 @@ class User extends Sprite {
   void input(Event event) {
     super.input(event);
     if (state == standing) {
-      jumpTo = y + 200.0;
+      jumpTo = y + height - 200.0;
       state = jumping;
       offset = 0;
       platform = null;
@@ -152,14 +157,14 @@ class User extends Sprite {
   void update(Time time) {
     super.update(time);
     if (state == jumping) {
-      y += 300.0 * time.elapsedSeconds;
-      if (y > jumpTo) {
+      y -= 300.0 * time.elapsedSeconds;
+      if (y + height < jumpTo) {
         state = falling;
       }
     } else if (state == falling) {
-      y -= 300.0 * time.elapsedSeconds;
-      if (y < 0) {
-        y = 0;
+      y += 300.0 * time.elapsedSeconds;
+      if (y > Context.height - height) {
+        y = Context.height - height;
         state = standing;
       }
     } else {
@@ -178,7 +183,7 @@ class User extends Sprite {
   void setPlatform(Platform platform) {
     this.platform = platform;
     state = standing;
-    y = platform.y + platform.height;
+    y = platform.y - height;
     offset = x - platform.x;
     score = platform.value;
   }
@@ -211,7 +216,7 @@ class Platform extends Sprite {
 
     value = index;
 
-    setSize(100.0, 10.0);
+    setSize(100.0, 20.0);
 
     reset(index + 1);
   }
@@ -241,7 +246,7 @@ class Platform extends Sprite {
   bool canLand(User user) {
     final double userLeft = user.x + user.width * 0.1;
     final double userRight = user.x + user.width * 0.9;
-    final double userY = user.y;
+    final double userY = user.y + user.height;
     if (y < userY && userY < y + height) {
       if (x < userLeft && userRight < x + width) {
         return true;
@@ -259,7 +264,7 @@ class Platform extends Sprite {
     speed = random.nextDouble() * maximumSpeed;
     speed = (speed < minimumSpeed) ? minimumSpeed : speed;
     final double x = random.nextDouble() * (Context.width - width);
-    final double y = value * distance;
+    final double y = Context.height - (value * distance);
     setPosition(x, y);
     this.value = value;
   }

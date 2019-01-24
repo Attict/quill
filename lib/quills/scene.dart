@@ -19,7 +19,7 @@ class Scene extends Quill {
   void setTranslate(double x, double y) {
     camera.setTranslate(x, y);
     if (hasComponent<TransformComponent>()) {
-      getComponent<TransformComponent>().setPosition(x, y);
+      //getComponent<TransformComponent>().setPosition(x, y);
     }
   }
 
