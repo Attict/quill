@@ -216,7 +216,7 @@ class Platform extends Sprite {
 
     value = index;
 
-    setSize(100.0, 20.0);
+    setSize(120.0, 20.0);
 
     reset(index + 1);
   }
