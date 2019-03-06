@@ -29,14 +29,21 @@ class Sprite extends Quill {
   @override
   void init() {
     super.init();
-    _transform = addComponent<TransformComponent>(new TransformComponent());
-    _size = addComponent<SizeComponent>(new SizeComponent());
+    if (_transform == null) {
+      _transform = addComponent<TransformComponent>(new TransformComponent());
+    }
+    if (_size == null) {
+      _size = addComponent<SizeComponent>(new SizeComponent());
+    }
   }
 
   /// Set Size
   ///
   ///
   void setSize(double width, double height) {
+    if (_size == null) {
+      _size = addComponent<SizeComponent>(new SizeComponent());
+    }
     _size.width = width;
     _size.height = height;
   }
@@ -45,6 +52,9 @@ class Sprite extends Quill {
   ///
   ///
   void setPosition(double x, double y) {
+    if (_transform == null) {
+      _transform = addComponent<TransformComponent>(new TransformComponent());
+    }
     _transform.setPosition(x, y);
   }
 
@@ -52,6 +62,9 @@ class Sprite extends Quill {
   /// 
   /// 
   void setOrigin(int origin) {
+    if (_transform == null) {
+      _transform = addComponent<TransformComponent>(new TransformComponent());
+    }
     _transform.setOrigin(new Origin(origin));
   }
 
@@ -64,5 +77,19 @@ class Sprite extends Quill {
       colorComponent = addComponent<ColorComponent>(new ColorComponent());
     }
     colorComponent.color = color;
+  }
+
+  /// Set Texture
+  ///
+  ///
+  void setTexture(Texture texture, {Rect source}) {
+    TextureComponent textureComponent = getComponent<TextureComponent>();
+    if (textureComponent == null) {
+      textureComponent = addComponent<TextureComponent>(new TextureComponent());
+    }
+    textureComponent.setTexture(texture);
+    if (source != null) {
+      textureComponent.setSource(source);
+    }
   }
 }

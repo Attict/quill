@@ -27,12 +27,14 @@ part './core/time.dart';
 part './core/timer.dart';
 part './core/transform.dart';
 
+part './components/animation_component.dart';
 part './components/camera_component.dart';
 part './components/color_component.dart';
 part './components/size_component.dart';
 part './components/texture_component.dart';
 part './components/transform_component.dart';
 
+part './quills/label.dart';
 part './quills/scene.dart';
 part './quills/sprite.dart';
 
