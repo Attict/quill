@@ -4,4 +4,5 @@ class Transform {
   Point position;
   double rotation;
   Point scale;
+  int zPosition;
 }

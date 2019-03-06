@@ -35,4 +35,8 @@ class TransformComponent extends Component {
   void setOrigin(Origin origin) {
     _origin = origin;
   }
+
+  void setZPosition(int zPosition) {
+    _transform.zPosition = zPosition;
+  }
 }
